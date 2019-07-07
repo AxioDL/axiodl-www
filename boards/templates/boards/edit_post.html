@@ -1,0 +1,28 @@
+{% extends 'boards/board_base.html' %}
+
+{% block title %}Edit post{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'board.index' %}">Boards</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'board.topics' post.topic.board.pk %}">{{ post.topic.board.name }}</a>
+    </li>
+    <li class="breadcrumb-item"><a
+            href="{% url 'board.topic.posts' post.topic.board.pk post.topic.pk %}">{{ post.topic.subject }}</a></li>
+    <li class="breadcrumb-item active">Edit post</li>
+{% endblock %}
+
+{% block content %}
+    <div class="card border-dark">
+    <div class="card-header bg-dark text-light"><div class="card-title">Edit Post</div></div>
+        <div class="card-body">
+            <form method="post" class="mb-4" novalidate>
+                {% csrf_token %}
+                {% include 'includes/form.html' %}
+                <button type="submit" class="btn btn-success">Save changes</button>
+                <a href="{% url 'board.topic.posts' post.topic.board.pk post.topic.pk %}"
+                   class="btn btn-outline-secondary"
+                   role="button">Cancel</a>
+            </form>
+        </div>
+    </div>
+{% endblock %}

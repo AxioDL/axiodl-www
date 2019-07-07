@@ -1,0 +1,138 @@
+{% load static %}
+{% load page_extras sass_tags martortags %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Django Boards{% endblock %}</title>
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+    <link href="https://fonts.googleapis.com/css?family=Peralta" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="{% static 'plugins/css/ace.min.css' %}" type="text/css" media="all" rel="stylesheet">
+    <link href="{% static 'plugins/css/semantic.min.css' %}" type="text/css" media="all" rel="stylesheet">
+    <link href="{% static 'plugins/css/resizable.min.css' %}" type="text/css" media="all" rel="stylesheet">
+    <link href="{% static 'martor/css/martor.min.css' %}" type="text/css" media="all" rel="stylesheet">
+    <link href="{% sass_src 'css/app.scss' %}" type="text/css" media="all" rel="stylesheet">
+    {% block stylesheet %}{% endblock %}
+</head>
+<body class="d-flex flex-column">
+{% block body %}
+    {% is_app_installed 'boards' as boards_installed %}
+
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark nav-container">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">AxioDL</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainMenu"
+                    aria-controls="mainMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainMenu">
+                <form class="form-inline">
+                    {% if get_main_page %}
+                        {% get_main_page as main_page %}
+                        {% with "/pages/"|add:main_page.slug|add:"/" as path %}
+                            {% if path == request.path or request.path == '' or request.path == '/' %}
+                                <a href="{{ path }}" class="btn btn-outline-secondary">Main Page</a>
+                            {% else %}
+                                <a href="{{ path }}" class="btn btn-primary bg-light text-dark">Main Page</a>
+                            {% endif %}
+                        {% endwith %}
+                    {% endif %}
+                    &nbsp;
+                    {% get_pages as pages %}
+                    {% for page in pages %}
+                        {% if page.is_mainpage == False %}
+                            {% with "/pages/"|add:page.slug|add:"/" as path %}
+                                {% if path == request.path %}
+                                    <a href="#" class="btn btn-outline-secondary">{{ page.page_name }}</a>
+                                {% else %}
+                                    <a href="{{ path }}"
+                                       class="btn btn-primary bg-light text-dark">{{ page.page_name }}</a>
+                                {% endif %}
+                            {% endwith %}
+                        {% endif %}
+                        &nbsp;
+                    {% endfor %}
+                    {% if boards_installed %}
+                        {% if '/boards/' in request.path %}
+                            <a href="#" class="btn btn-outline-secondary">Forums</a>
+                        {% else %}
+                            <a href="{% url 'board.index' %}"
+                               class="btn btn-primary bg-light text-dark">Forums</a>
+                        {% endif %}
+                    {% endif %}
+                </form>
+                {% if user.is_authenticated %}
+                    <ul class="navbar-nav ml-auto btn btn-secondary btn-sm">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userMenu" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">{{ user.username }}</a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+                                <a class="dropdown-item" href="{% url 'view_account' %}">My Account</a>
+                                <a class="dropdown-item" href="{% url 'password_change' %}">Change Password</a>
+                                <div class="dropdown-divider"></div>
+                                {% if user.is_staff or user.is_superuser %}
+                                    <a class="dropdown-item" href="{% url 'admin:index' %}">Admin Panel</a>
+                                {% endif %}
+                                {% if perms.pages.add_page %}
+                                    <a class="dropdown-item" href="{% url 'pages.create.page' %}">Create A New Page</a>
+                                {% endif %}
+                                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                {% else %}
+                    <form class="form-inline ml-auto">
+                        <a href="{% url 'login' %}" class="btn btn-outline-secondary">Login</a>
+                        <a href="{% url 'signup' %}" class="btn btn-primary bg-dark">Signup</a>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="container" style="padding-bottom: 3.5em;">
+        {% block breadcrumb-base %}
+            <ol class="breadcrumb my-4 bg-dark text-light">
+                {% block breadcrumb %}
+                {% endblock %}
+            </ol>
+        {% endblock %}
+
+        {% block content %}
+        {% endblock %}
+    </div>
+
+{% endblock %}
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<script type="text/javascript" src="{% static 'plugins/js/jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/js/ace.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/js/semantic.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/js/mode-markdown.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/js/ext-language_tools.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/js/theme-github.js' %}"></script>
+<script type="text/javascript" src="/static/plugins/js/highlight.min.js"></script>
+<script type="text/javascript" src="/static/plugins/js/resizable.min.js"></script>
+<script type="text/javascript" src="/static/plugins/js/emojis.min.js"></script>
+<script type="text/javascript" src="/static/martor/js/martor.min.js"></script>
+{% block javascript %}{% endblock %}
+<div class="footer py-1 bg-dark text-white-50">
+    <div class="container text-center">
+        <small style="font-size:1.0em">Copyleft <span class="copy-left" ;>&copy</span> AxioDL, written in <a
+                href="https://python.org/">Python</a> using <a href="https://www.djangoproject.com/">Django</a>.
+            The source code for this website is available on our gitlab instance <a
+                    href="https://gitlab.axiodl.com/AxioDL/axiodl-www">here</a>
+        </small>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% block title %} AxioDL - Account - {{ user.username }} {% endblock %}
+{% load form_tags widget_tweaks gravatar static %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">AxioDL</a></li>
+    <li class="breadcrumb-item active">View Account - {{ user.username }}</li>
+{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-lg-11 col-md-11 col-sm-11">
+            <div class="card border-dark">
+                <div class="card-header bg-dark text-light">
+                    <div class="card-title">New Page</div>
+                </div>
+                <form method="post" enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {% for error in form.non_field_errors %}
+                                <p{% if forloop.last %} class="mb-0"{% endif %}>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <div class="card-img">
+                            <div class="col-sm-4 col-md-2 col-lg-2">
+                                {% if user.profile.use_gravatar %}
+                                    <img src="{{ user|gravatar }}" width="128px" class="rimg-responsive fit-image">
+                                {% elif user.profile.avatar %}
+                                    <img src="{{ user.profile.avatar.url }}" width="128px"
+                                         class="img-responsive fit-image">
+                                {% else %}
+                                    <img src="{% static 'img/default-avatar.png' %}" width="128px"
+                                         class="img-responsive fit-image rounded-circle">
+                                {% endif %}
+                            </div>
+                            <!-- Profile avatar -->
+                            {{ form.avatar.label_tag }}
+                            {% render_field form.avatar %}
+                            {% for error in form.avatar.errors %}
+                                <div class="invalid-feedback">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                            {% if form.avatar.help_text %}
+                                <small class="form-text text-muted">
+                                    {{ form.avatar.help_text|safe }}
+                                </small>
+                            {% endif %}
+
+                            <!-- Profile use_gravatar -->
+                            <div class="form-check">
+                                {% render_field form.use_gravatar class=form.use_gravatar|input_class %}
+                                {{ form.use_gravatar.label_tag }}
+                                {% for error in form.use_gravatar.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                                {% if form.use_gravatar.help_text %}
+                                    <small class="form-text text-muted">
+                                        {{ form.use_gravatar.help_text|safe }}
+                                    </small>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <!-- Profile first_name -->
+                        {{ form.first_name.label_tag }}
+                        {% render_field form.first_name class=form.first_name|input_class %}
+                        {% for error in form.first_name.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                        {% if form.first_name.help_text %}
+                            <small class="form-text text-muted">
+                                {{ form.first_name.help_text|safe }}
+                            </small>
+                        {% endif %}
+                        <!-- Profile last_name -->
+                        {{ form.last_name.label_tag }}
+                        {% render_field form.last_name class=form.last_name|input_class %}
+                        {% for error in form.last_name.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                        {% if form.last_name.help_text %}
+                            <small class="form-text text-muted">
+                                {{ form.last_name.help_text|safe }}
+                            </small>
+                        {% endif %}
+                        <!-- Profile email -->
+                        {{ form.email.label_tag }}
+                        {% render_field form.email class=form.email|input_class %}
+                        {% for error in form.email.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                        {% if form.email.help_text %}
+                            <small class="form-text text-muted">
+                                {{ form.email.help_text|safe }}
+                            </small>
+                        {% endif %}
+                        <!-- Profile location -->
+                        {{ form.location.label_tag }}
+                        {% render_field form.location class=form.location|input_class %}
+                        {% for error in form.location.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                        {% if form.location.help_text %}
+                            <small class="form-text text-muted">
+                                {{ form.location.help_text|safe }}
+                            </small>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer bg-dark">
+                        <div id="container-fluid">
+                            <div class="row">
+                                <div class="col-10"></div>
+                                <div class="col-2 btn-group">
+                                    <button type="submit" class="btn btn-success">Save Changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

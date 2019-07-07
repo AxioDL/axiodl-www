@@ -1,0 +1,44 @@
+body {
+  background-image: url(../img/memphis-mini-dark.png);
+}
+
+.logo {
+  font-family: 'Peralta', cursive;
+
+  a {
+    color: rgba(0, 0, 0, .9);
+
+    hover, active {
+      text-decoration: none;
+    }
+  }
+}
+
+.navbar-brand {
+  font-family: 'Peralta', cursive, bold;
+}
+
+.nav-container {
+  border-bottom-left-radius: .5em;
+  border-bottom-right-radius: .5em;
+}
+
+.footer {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  border-top-left-radius: 1em;
+  border-top-right-radius: 1em;
+}
+
+.copy-left {
+  display: inline-block;
+  text-align: right;
+  margin: 0px;
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  filter: FlipH;
+  -ms-filter: “FlipH”;
+}
