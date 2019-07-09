@@ -3,8 +3,17 @@
 {% load martortags %}
 {% load page_extras %}
 
+
 {% block meta %}
-{{ page|generate_twitter_card }}
+    {% if page %}
+        {% if page.logo %}
+            {% generate_twitter_card 'AxioDL' page.page_name page.description page.logo.url %}
+        {% else %}
+            {% generate_twitter_card 'AxioDL' page.page_name page.description %}
+        {% endif %}
+    {% else %}
+        {% generate_twitter_card 'AxioDL' 'AxioDL Index' 'Nothing much going on' %}
+    {% endif %}
 {% endblock %}
 {% block breadcrumb-base %}<br/>{% endblock %}
 {% block content %}
@@ -12,11 +21,13 @@
         <div class="card border-dark">
             <div class="card-header bg-dark border-dark text-light">
                 <div class="row">
-                    <div class="col-md-1">
-                        <div>
-                            <img width="32px" src="{{ page.logo.url }}"/>
+                    {% if page.logo %}
+                        <div class="col-md-1">
+                            <div>
+                                <img width="32px" src="{{ page.logo.url }}"/>
+                            </div>
                         </div>
-                    </div>
+                    {% endif %}
                     <div class="col-md-9 text-center">
                         <h2>{{ page.page_name }}</h2>
                     </div>

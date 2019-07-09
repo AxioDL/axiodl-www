@@ -1,17 +1,34 @@
 from django.db import models
 from django.conf import settings
 from django.utils.text import Truncator
+from django.core.exceptions import ValidationError
 from martor.models import MartorField
+import math
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=30, unique=True)
+    description = models.CharField(max_length=100)
+
+    class Meta:
+        verbose_name_plural = 'Categories'
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def get_children(self):
+        return Board.objects.all().filter(category=self)
 
 
 class Board(models.Model):
     name = models.CharField(max_length=30, unique=True)
     description = models.CharField(max_length=100)
-    parent = models.ForeignKey('self',
-                               on_delete=models.CASCADE,
-                               null=True,
-                               blank=True,
-                               parent_link=True)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, parent_link=True,
+                               related_name='+')
+
+    category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.CASCADE, parent_link=True)
+    locked = models.BooleanField(default=False, blank=True)
 
     def __str__(self):
         return self.name
@@ -21,6 +38,15 @@ class Board(models.Model):
 
     def get_last_post(self):
         return Post.objects.filter(topic__board=self).order_by('-created_at').first()
+
+    def save(self, *args, **kwargs):
+        if self.parent and self.parent.name == self.name:
+            raise ValidationError('You can\'t have yourself as a parent!')
+        return super(Board, self).save(*args, **kwargs)
+
+    @property
+    def get_children(self):
+        return Board.objects.all().filter(parent=self)
 
 
 class Topic(models.Model):

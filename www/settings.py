@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
 
     # external
+    'autoslug',
     'widget_tweaks',
     'martor',
     'sass_processor',
@@ -202,3 +203,5 @@ MARTOR_SEARCH_USERS_URL = '/martor/search-user/' # default
 MARTOR_MARKDOWN_BASE_EMOJI_URL = 'https://github.githubassets.com/images/icons/emoji/'                  # default from github
 #MARTOR_MARKDOWN_BASE_MENTION_URL = 'http://localhost/author/'
 #AUTH_USER_MODEL = 'accounts.AccountUser'
+
+

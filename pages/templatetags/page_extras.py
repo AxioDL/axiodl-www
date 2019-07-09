@@ -1,16 +1,19 @@
 from django import template
+from django.template.defaultfilters import safe
 import mistune
 from pygments import highlight
 from pygments.lexers import get_lexer_by_name
 from pygments.formatters import HtmlFormatter
 
 from ..models import Page
+
 register = template.Library()
 
 
 @register.simple_tag
 def get_main_page(*args, **kwargs):
     return Page.objects.get(is_mainpage=True)
+
 
 @register.simple_tag
 def get_pages(*args, **kwargs):
@@ -32,7 +35,7 @@ class HighlightRenderer(mistune.Renderer):
     def block_code(self, code, lang):
         if not lang:
             return '\n<pre><code>%s</code></pre>\n' % \
-                mistune.escape(code)
+                   mistune.escape(code)
         lexer = get_lexer_by_name(lang, stripall=True)
         formatter = HtmlFormatter()
         return highlight(code, lexer, formatter)
@@ -46,12 +49,17 @@ def hilight(value):
     return markdown(value)
 
 
-@register.filter
-def generate_twitter_card(page):
-    twitter_card = ''
-    if page:
-        twitter_card = '<meta name="twitter:card" content="summary" />'
-        twitter_card += '<meta name="twitter:site" content="%s"'.format()
+@register.simple_tag
+def generate_twitter_card(site, title, description, img_url='', creator='', is_large_image=False):
+    if is_large_image and img_url != '':
+        card = '<meta name="twitter:card" content="summary_large_image" />\n'
+    else:
+        card = '<meta name="twitter:card" content="summary" />\n'
 
-    return twitter_card
+    card += ('<meta name="twitter:title" content="{0}" />\n'
+             '<meta name="twitter:description" content="{1}" />\n').format(site, title, description)
 
+    if img_url != '':
+        card += '<meta name="twitter:image" content="{}" />\n'.format(img_url)
+
+    return safe(card)

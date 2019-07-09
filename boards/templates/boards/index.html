@@ -1,49 +1,23 @@
-{% extends 'boards/board_base.html' %}
-
-{% load humanize %}
+{% extends 'base.html' %}
 
 {% block breadcrumb %}
     <li class="breadcrumb-item active">Boards</li>
 {% endblock %}
 
 {% block content %}
-    <table class="table bg-light">
-        <thead class="thead-dark">
-        <tr>
-            <th>Board</th>
-            <th>Posts</th>
-            <th>Topics</th>
-            <th>Last Post</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for board in boards %}
-            <tr>
-                <td>
-                    <a href="{% url 'board.topics' board.pk %}">{{ board.name }}</a>
-                    <small class="text-muted d-block">{{ board.description }}</small>
-                </td>
-                <td class="align-middle">
-                    {{ board.get_posts_count }}
-                </td>
-                <td class="align-middle">
-                    {{ board.topics.count }}
-                </td>
-                <td class="align-middle">
-                    {% with post=board.get_last_post %}
-                        {% if post %}
-                            <small>
-                                <a href="{% url 'board.topic.posts' board.pk post.topic.pk %}">
-                                    By {{ post.created_by.username }} at {{ post.created_at|naturaltime }}
-                                </a>
-                            </small>
-                        {% else %}
-                            <em>No posts yet.</em>
-                        {% endif %}
-                    {% endwith %}
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {% for category in categories %}
+        {% with category.get_children as boards %}
+            {% with None as board %}
+                <div class="card bg-light border-dark mb-3">
+                    <div class="card-header bg-dark text-light">
+                        <div class="card-title"><h1 class="text-light font-weight-bold">{{ category.name }}</h1></div>
+                    </div>
+                    <div class="card-body bg-dark">
+                        {% include 'boards/includes/board_list.html' %}
+                    </div>
+                    <div class="card-footer bg-dark text-light"></div>
+                </div>
+            {% endwith %}
+        {% endwith %}
+    {% endfor %}
 {% endblock %}

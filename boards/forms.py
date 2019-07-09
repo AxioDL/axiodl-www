@@ -3,6 +3,12 @@ from martor.fields import MartorFormField
 from .models import Topic, Post, Board
 
 
+class BoardForm(forms.ModelForm):
+    class Meta:
+        model = Board
+        fields = ['name', 'description', 'parent']
+
+
 class NewTopicForm(forms.ModelForm):
     message = MartorFormField(
         max_length=4000,

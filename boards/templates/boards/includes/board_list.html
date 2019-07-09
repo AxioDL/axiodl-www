@@ -1,0 +1,57 @@
+{% load humanize %}
+<table class="table bg-light striped">
+    <thead class="thead-dark">
+    <tr>
+        <th>Board</th>
+        <th>Posts</th>
+        <th>Topics</th>
+        <th>Last Post</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for child_board in boards %}
+        {% if child_board.parent is None or child_board.parent == board %}
+            <tr>
+                <td>
+                    <div class="flex-column">
+                        <div class="flex-row">
+                            <a href="{% url 'board.topics' child_board.pk %}">{{ child_board.name }}</a>
+                            <small class="text-muted d-block">{{ child_board.description }}</small>
+                        </div>
+                        {% if child_board.get_chilren is not None %}
+                            <div class="flex-row">Subforums:</div>
+                            <div class="flex-row">
+                                <small text-muted d-block>
+                                    {% for child in child_board.get_children %}
+                                        <a href="{% url 'board.topics' child.pk %}">{{ child.name }}</a>
+                                    {% endfor %}
+                                </small>
+                            </div>
+                        {% endif %}
+                    </div>
+                </td>
+                <td class="align-middle">
+                    {{ child_board.get_posts_count }}
+                </td>
+                <td class="align-middle">
+                    {{ child_board.topics.count }}
+                </td>
+                <td class="align-middle">
+                    {% with post=child_board.get_last_post %}
+                        {% if post %}
+                            <small>
+                                <a href="{% url 'board.topic.posts' child_board.pk post.topic.pk %}">
+                                    By {{ post.created_by.username }}
+                                    at {{ post.created_at|naturaltime }}
+                                </a>
+                            </small>
+                        {% else %}
+                            <em>No posts yet.</em>
+                        {% endif %}
+                    {% endwith %}
+                </td>
+            </tr>
+        {% endif %}
+    {% endfor %}
+    </tbody>
+</table>

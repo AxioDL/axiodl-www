@@ -1,4 +1,4 @@
-{% extends 'boards/board_base.html' %}
+{% extends 'base.html' %}
 {% load humanize %}
 
 {% block title %}
@@ -14,27 +14,52 @@
     <div class="mb-4 text-lg-right">
         <a href="{% url 'board.new.topic' board.pk %}" class="btn btn-primary">New topic</a>
     </div>
-    <table class="table bg-light table-striped mb-4">
-        <thead class="thead-dark">
-        <tr>
-            <th>Topic</th>
-            <th>Starter</th>
-            <th>Replies</th>
-            <th>Views</th>
-            <th>Last Update</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for topic in topics %}
-            <tr>
-                <td><a href="{% url 'board.topic.posts' board.pk topic.pk %}">{{ topic.subject }}</a></td>
-                <td>{{ topic.starter.username }}</td>
-                <td>{{ topic.replies }}</td>
-                <td>{{ topic.views }}</td>
-                <td>{{ topic.last_updated|naturalday }} {{ topic.last_updated|naturaltime }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    {% include 'includes/pagination.html' %}
+    {% if board.get_children %}
+        <div class="card bg-dark bg-light mb-3">
+            <div class="card-header bg-dark text-light">
+                <div class="card-title"><h1 class="text-light font-weight-bold">Subforums</h1></div>
+            </div>
+            <div class="card-body">
+                {% with board.get_children as boards %}
+                    {% include 'boards/includes/board_list.html' %}
+                {% endwith %}
+            </div>
+        </div>
+    {% endif %}
+    <div class="card bg-dark mb-3">
+        <div class="card-header bg-dark text-light">
+            <div class="card-title"><h1 class="text-light font-weight-bold">{{ board.name }}</h1></div>
+        </div>
+        <div class="card-body">
+            <table class="table bg-light table-striped mb-4">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Topic</th>
+                    <th>Starter</th>
+                    <th>Replies</th>
+                    <th>Views</th>
+                    <th>Last Update</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for topic in topics %}
+                    <tr>
+                        <td><a href="{% url 'board.topic.posts' board.pk topic.pk %}">{{ topic.subject }}</a></td>
+                        <td>{{ topic.starter.username }}</td>
+                        <td>{{ topic.replies }}</td>
+                        <td>{{ topic.views }}</td>
+                        <td>
+                            {% if topic.last_updated %}
+                                {{ topic.last_updated|naturaltime }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="footer">
+            {% include 'includes/pagination.html' %}
+        </div>
+    </div>
 {% endblock %}

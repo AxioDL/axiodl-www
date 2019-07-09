@@ -1,0 +1,40 @@
+- model: boards.category
+  pk: 1
+  fields:
+    name: General
+    description: General Website Discussions
+- model: boards.board
+  pk: 1
+  fields:
+    name: General Discussion
+    description: General Website Discussion
+    parent: null
+    category: 1
+    locked: false
+- model: boards.topic
+  pk: 1
+  fields:
+    subject: Welcome to the Forums
+    last_updated: 2019-01-01 08:01
+    board: 1
+    starter: 1
+    views: 0
+- model: boards.post
+  pk: 1
+  fields:
+    message: "Take a look around, there isn't much yet, but the potential is _limitless_.\r\n\r\n\r\n~
+      Admin ~"
+    topic: 1
+    created_at: 2019-01-01 08:00
+    updated_at: null
+    created_by: 1
+    updated_by: null
+- model: boards.post
+  pk: 2
+  fields:
+    message: "Oh look, a reply!"
+    topic: 1
+    created_at: 2019-01-01 08:01
+    updated_at: null
+    created_by: 1
+    updated_by: null

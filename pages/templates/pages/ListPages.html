@@ -20,7 +20,9 @@
         {% for page in pages %}
             <tr>
                 <td>
-                    <img src="{{ page.logo.url }}" width="24px"/>
+                    {% if page.logo %}
+                        <img src="{{ page.logo.url }}" width="24px"/>
+                    {% endif %}
                 </td>
                 <td class="align-middle">
                     {{ page.page_name }}

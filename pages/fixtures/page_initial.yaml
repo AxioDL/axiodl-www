@@ -1,0 +1,47 @@
+- model: auth.group
+  fields:
+    name: Content Creator
+    permissions:
+    - - add_page
+      - pages
+      - page
+    - - change_page
+      - pages
+      - page
+    - - delete_page
+      - pages
+      - page
+    - - view_page
+      - pages
+      - page
+- model: auth.group
+  fields:
+    name: Banned
+    permissions: []
+- model: auth.user
+  fields:
+    password: password
+    last_login: null
+    is_superuser: true
+    username: admin
+    first_name: ''
+    last_name: ''
+    email: ''
+    is_staff: true
+    is_active: true
+    date_joined: 2019-01-01 00:00
+    groups: []
+    user_permissions: []
+- model: pages.page
+  fields:
+    page_name: 'Welcome!'
+    description: 'Welcome to AxioDL!'
+    content: 'This is the default page, if you wish to modify this page, log in as an `Administrator`, `Super User` or `Content Creator` and click `Edit` at the bottom right of this page, otherwise click `Create Page` under your user dropdown menu'
+    is_mainpage: true
+    hidden: false
+    logo: null
+    created_at: 2019-01-01 00:00
+    created_by: 1
+    slug: 'welcome'
+    
+

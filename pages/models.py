@@ -13,10 +13,11 @@ class Page(models.Model):
     updated_at = models.DateTimeField(null=True, blank=True)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='page', on_delete=models.CASCADE)
     updated_by = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, related_name='+', on_delete=models.CASCADE)
-    is_mainpage = UniqueBooleanField()
+    is_mainpage = UniqueBooleanField(verbose_name='Main Page')
+    hidden = models.BooleanField(default=False, blank=True)
     description = models.CharField(max_length=200)
     content = MartorField(null=True, blank=True)
-    logo = models.ImageField(upload_to='images')
+    logo = models.ImageField(upload_to='images', null=True, blank=True)
     slug = models.SlugField(unique=True)
 
     def __str__(self):
@@ -24,6 +25,7 @@ class Page(models.Model):
 
     @transaction.atomic
     def save(self, *args, **kwargs):
+        print('Page!')
         self.slug = slugify(self.page_name)
         super(Page, self).save(*args, **kwargs)
 

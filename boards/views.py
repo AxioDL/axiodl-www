@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import UpdateView, ListView
 from .forms import NewTopicForm, PostForm
-from .models import Board, Topic, Post
+from .models import Category, Board, Topic, Post
 
 
 class TopicListView(ListView):
@@ -80,7 +80,7 @@ def reply_topic(request, pk, topic_pk):
             topic.last_updated = timezone.now()
             topic.save()
 
-            topic_url = reverse('topic_posts', kwargs={'pk': pk, 'topic_pk': topic_pk})
+            topic_url = reverse('board.topic.posts', kwargs={'pk': pk, 'topic_pk': topic_pk})
             topic_post_url = '{url}?page={page}#{id}'.format(
                 url=topic_url,
                 id=post.pk,
@@ -93,9 +93,9 @@ def reply_topic(request, pk, topic_pk):
     return render(request, 'boards/reply_topic.html', {'topic': topic, 'form': form})
 
 
-class BoardListView(ListView):
-    model = Board
-    context_object_name = 'boards'
+class CategoryListView(ListView):
+    model = Category
+    context_object_name = 'categories'
     template_name = 'boards/index.html'
 
 
