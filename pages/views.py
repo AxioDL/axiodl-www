@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import permission_required
 from django.core.exceptions import ObjectDoesNotExist
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, DeleteView, ListView
 from django.utils import timezone
+from django.urls import reverse_lazy
 from .forms.PageForm import PageForm
 from .models import Page
 
@@ -25,11 +26,16 @@ def view_page(request, slug):
     return render(request, 'pages/index.html', {'page': page})
 
 
-def delete_page(request, slug):
-    page = get_object_or_404(Page, slug=slug)
-    page.delete()
+class PageDeleteView(DeleteView):
+    model = Page
+    template_name = 'pages/DeletePage.html'
+    success_url = reverse_lazy('home')
+    slug_field = 'slug'
 
-    return redirect('home')
+    def form_valid(self, form):
+        page = form.save(commit=False)
+        print(page)
+        return self.render_to_response({'page': page})
 
 
 class PageUpdateView(UpdateView):
@@ -45,6 +51,11 @@ class PageUpdateView(UpdateView):
         page.updated_at = timezone.now()
         page.save()
         return redirect('pages.view.page', slug=page.slug)
+
+
+class PageListView(ListView):
+    model = Page
+    template_name = 'pages/ListPages.html'
 
 
 @permission_required('pages.add_page')

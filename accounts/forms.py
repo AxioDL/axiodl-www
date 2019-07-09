@@ -1,20 +1,34 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from betterforms.multiform import MultiModelForm
 from django.contrib.auth.models import User
 from .models import Profile
 
 
-class SignUpForm(UserCreationForm):
-    email = forms.CharField(max_length=254, required=True, widget=forms.EmailInput())
+class UserSignUpForm(UserCreationForm):
+    email = forms.CharField(max_length=254, label='Email Address', required=True, widget=forms.EmailInput())
 
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2')
 
 
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['avatar', 'use_gravatar']
+
+
+class UserCreationMultiForm(MultiModelForm):
+    form_classes = {
+        'user': UserSignUpForm,
+        'profile': UserProfileForm,
+    }
+
+
 class ProfileForm(forms.ModelForm):
-    first_name = forms.CharField(max_length=256)
-    last_name = forms.CharField(max_length=256)
+    first_name = forms.CharField(max_length=256, required=False)
+    last_name = forms.CharField(max_length=256, required=False)
     email = forms.EmailField(max_length=254, required=True, widget=forms.EmailInput())
     use_gravatar = forms.BooleanField(label='Use avatars from Gravatar?', required=False)
 

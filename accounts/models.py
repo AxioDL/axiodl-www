@@ -36,3 +36,33 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
     instance.profile.save()
+
+
+@receiver(models.signals.post_delete, sender=Profile)
+def auto_delete_file_on_delete(sender, instance, **kwargs):
+    """
+    Deletes file from filesystem
+    when corresponding `Profile` object is deleted.
+    """
+    if instance.avatar:
+        instance.avatar.delete(save=False)
+
+
+@receiver(models.signals.pre_save, sender=Profile)
+def auto_delete_file_on_change(sender, instance, **kwargs):
+    """
+    Deletes old file from filesystem
+    when corresponding `Profile` object is updated
+    with new file.
+    """
+    if not instance.pk:
+        return False
+
+    try:
+        old_avatar = Profile.objects.get(pk=instance.pk).avatar
+    except Profile.DoesNotExist:
+        return False
+
+    new_avatar = instance.avatar
+    if not old_avatar == new_avatar:
+        old_avatar.delete(save=False)

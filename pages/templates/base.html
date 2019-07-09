@@ -4,6 +4,7 @@
 <html>
 <head>
     <meta charset="utf-8">
+    {% block meta %}{% endblock %}
     <title>{% block title %}Django Boards{% endblock %}</title>
     <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
     <link href="https://fonts.googleapis.com/css?family=Peralta" rel="stylesheet">
@@ -13,7 +14,10 @@
     <link href="{% static 'plugins/css/semantic.min.css' %}" type="text/css" media="all" rel="stylesheet">
     <link href="{% static 'plugins/css/resizable.min.css' %}" type="text/css" media="all" rel="stylesheet">
     <link href="{% static 'martor/css/martor.min.css' %}" type="text/css" media="all" rel="stylesheet">
+    <link href="{% static 'martor/css/martor-admin.min.css' %}" type="text/css" media="all" rel="stylesheet">
     <link href="{% sass_src 'css/app.scss' %}" type="text/css" media="all" rel="stylesheet">
+    <link href="{% static 'css/styles.css' %}" type="text/css" media="all" rel="stylesheet">
+    <script type="text/javascript" src="{% static 'plugins/js/snippets/markdown.js' %}"></script>
     {% block stylesheet %}{% endblock %}
 </head>
 <body class="d-flex flex-column">
@@ -62,6 +66,9 @@
                                class="btn btn-primary bg-light text-dark">Forums</a>
                         {% endif %}
                     {% endif %}
+
+                    <a href="{% url 'pages.list' %}"
+                       class="btn btn-primary bg-light text-dark">Page list</a>
                 </form>
                 {% if user.is_authenticated %}
                     <ul class="navbar-nav ml-auto btn btn-secondary btn-sm">
@@ -120,10 +127,18 @@
 <script type="text/javascript" src="{% static 'plugins/js/mode-markdown.js' %}"></script>
 <script type="text/javascript" src="{% static 'plugins/js/ext-language_tools.js' %}"></script>
 <script type="text/javascript" src="{% static 'plugins/js/theme-github.js' %}"></script>
-<script type="text/javascript" src="/static/plugins/js/highlight.min.js"></script>
-<script type="text/javascript" src="/static/plugins/js/resizable.min.js"></script>
-<script type="text/javascript" src="/static/plugins/js/emojis.min.js"></script>
-<script type="text/javascript" src="/static/martor/js/martor.min.js"></script>
+<script type="text/javascript" src="{% static 'plugins/js/highlight.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/js/resizable.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/js/emojis.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'martor/js/martor.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/js/semantic.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/js/highlight.min.js' %}"></script>
+<script>
+    $('pre').each(function (i, block) {
+        hljs.highlightBlock(block);
+    });
+    $('.ui.dropdown').dropdown();
+</script>
 {% block javascript %}{% endblock %}
 <div class="footer py-1 bg-dark text-white-50">
     <div class="container text-center">

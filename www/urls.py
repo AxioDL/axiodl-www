@@ -21,11 +21,16 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', include('pages.urls')),
-#    url(r'^boards/', include('boards.urls')),
+    url(r'^boards/', include('boards.urls')),
     url(r'^account/', include('accounts.urls')),
+    url(r'^jet/', include('jet.urls', 'jet')),  # Django JET URLS
+    url(r'^jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),  # Django JET dashboard URLS
     url(r'^admin/', admin.site.urls),
     path('martor/', include('martor.urls')),
 ]
+
+admin.site.site_header = 'AxioDL Admin'
+admin.site.set_title = 'AxioDL Admin Portal'
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

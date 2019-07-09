@@ -3,10 +3,16 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, CreateView
 from django.shortcuts import render, redirect
-from .forms import SignUpForm, ProfileForm
+from .forms import UserSignUpForm, ProfileForm, UserCreationMultiForm
 from .models import  Profile
+
+
+def gitlab_auth(request):
+    print(request.POST)
+
+    return render(request, 'base.html')
 
 
 def gravatar(user):
@@ -20,17 +26,18 @@ def gravatar(user):
     return url
 
 
-def signup(request):
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            auth_login(request, user)
-            return redirect('home')
-    else:
-        form = SignUpForm()
+class UserSignupView(CreateView):
+    form_class = UserCreationMultiForm
+    success_url = reverse_lazy('home')
+    template_name = 'signup.html'
 
-    return render(request, 'signup.html', {'form': form})
+    def form_valid(self, form):
+        # We need to save the user before we can save the profile
+        user = form['user'].save()
+        profile = form['profile'].save(commit=False)
+        profile.user = user
+        profile.save()
+        return redirect(self.get_success_url())
 
 
 @method_decorator(login_required, name='dispatch')

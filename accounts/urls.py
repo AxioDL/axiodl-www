@@ -1,10 +1,10 @@
 from django.conf.urls import url, include
 from django.contrib.auth import views as auth_views
 
-from .views import signup, UserUpdateView
+from .views import UserUpdateView, gitlab_auth, UserSignupView
 
 urlpatterns = [
-    url(r'^signup/$', signup, name='signup'),
+    url(r'^signup/$', UserSignupView.as_view(), name='signup'),
     url(r'^login/$', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     url(r'^logout/$', auth_views.LogoutView.as_view(), name='logout'),
     url(r'^reset/$',
@@ -29,4 +29,5 @@ urlpatterns = [
         template_name='password_change_done.html'),
         name='password_change_done'),
     url(r'^view/$', UserUpdateView.as_view(), name='view_account'),
+    url(r'^gitlab/callback/$', gitlab_auth, name='gitlab.callback')
 ]

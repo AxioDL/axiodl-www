@@ -30,6 +30,8 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '10.0.0.233']
 
 # Application definition
 INSTALLED_APPS = [
+    'jet.dashboard',
+    'jet',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,11 +44,12 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'martor',
     'sass_processor',
+    'formtools',
 
     # AxioDL modules
     'pages',
     'accounts',
-    #'boards',
+    'boards',
 ]
 
 
@@ -89,12 +92,7 @@ WSGI_APPLICATION = 'www.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+from .database import DatabaseConfig as DATABASES
 
 
 # Password validation
@@ -193,7 +191,7 @@ MARTOR_MARKDOWN_EXTENSIONS = [
 ]
 
 # Markdown Extensions Configs
-MARTOR_MARKDOWN_EXTENSION_CONFIGS = {}
+#MARTOR_MARKDOWN_EXTENSION_CONFIGS = {}
 
 # Markdown urls
 MARTOR_UPLOAD_URL = '/martor/uploader/' # default

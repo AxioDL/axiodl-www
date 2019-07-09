@@ -1,6 +1,6 @@
 from django import forms
 from martor.fields import MartorFormField
-from .models import Topic, Post
+from .models import Topic, Post, Board
 
 
 class NewTopicForm(forms.ModelForm):

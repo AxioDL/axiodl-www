@@ -5,9 +5,10 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='home'),
-    path('pages/create/', views.create_page, name='pages.create.page'),
-    path('pages/<str:slug>/', views.view_page, name='pages.view.page'),
-    path('pages/<str:slug>/delete/', views.delete_page, name='pages.delete.page'),
-    path('pages/<str:slug>/edit/',
+    url(r'^pages/create/$', views.create_page, name='pages.create.page'),
+    url(r'^pages/list/$', views.PageListView.as_view(), name='pages.list'),
+    url(r'^pages/(?P<slug>[^/]+)/$', views.view_page, name='pages.view.page'),
+    url(r'^pages/(?P<slug>[^/]+)/delete/$', views.PageDeleteView.as_view(), name='pages.delete.page'),
+    url(r'^pages/(?P<slug>[^/]+)/edit/$',
          permission_required('pages.edit_page')(views.PageUpdateView.as_view()), name='pages.edit.page'),
 ]

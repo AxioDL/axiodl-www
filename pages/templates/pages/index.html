@@ -3,14 +3,9 @@
 {% load martortags %}
 {% load page_extras %}
 
-{% block javascript %}
-    <script>
-        $(document).on('click', '.confirm-delete', function () {
-            return confirm('Are you sure you want to delete this?');
-        })
-    </script>
+{% block meta %}
+{{ page|generate_twitter_card }}
 {% endblock %}
-
 {% block breadcrumb-base %}<br/>{% endblock %}
 {% block content %}
     {% if page %}
@@ -18,12 +13,12 @@
             <div class="card-header bg-dark border-dark text-light">
                 <div class="row">
                     <div class="col-md-1">
-                        <div class="imgAbt">
+                        <div>
                             <img width="32px" src="{{ page.logo.url }}"/>
                         </div>
                     </div>
                     <div class="col-md-9 text-center">
-                        <h1>{{ page.page_name }}</h1>
+                        <h2>{{ page.page_name }}</h2>
                     </div>
                 </div>
             </div>
@@ -44,7 +39,7 @@
                         <div class="col-2 text-center">
                             <!-- spacer -->
                         </div>
-                        <div class="col-2 btn-group">
+                        <div class="btn-group">
                             {% if perms.pages.delete_page %}
                                 <a href="{% url 'pages.delete.page' page.slug %}"
                                    class="btn btn-danger confirm-delete">Delete</a>

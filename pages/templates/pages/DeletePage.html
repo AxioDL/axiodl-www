@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Index</a></li>
+    <li class="breadcrumb-item active">Delete page</li>
+{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-6 col-sm-8">
+            <div class="card border-dark">
+                <div class="card-header bg-dark text-light">
+                    <div class="card-title col-md-9 text-center">
+                        Are you sure you want to delete {{ page.page_name }}?
+                    </div>
+                </div>
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    {% include 'includes/form.html' %}
+                    <div class="card-body">
+                        <p>Deleting a page is permanent and cannot be undone. <br/>Are you sure you wish to delete the
+                            page '{{ page.page_name }}'?</p>
+                    </div>
+                    <div class="card-footer bg-dark">
+                        <div id="container-fluid">
+                            <div class="row">
+                                <div class="col-7"></div>
+                                <div class="col-2 btn-group">
+                                    <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-success">Cancel</a>
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

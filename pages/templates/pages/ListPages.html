@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Index</a></li>
+    <li class="breadcrumb-item active">Page list</li>
+{% endblock %}
+
+{% block content %}
+    <table class="table bg-light">
+        <thead class="thead-dark">
+        <tr>
+            <th>Logo</th>
+            <th>Title</th>
+            <th>Main Page</th>
+            <th>Description</th>
+            <th>URL</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for page in pages %}
+            <tr>
+                <td>
+                    <img src="{{ page.logo.url }}" width="24px"/>
+                </td>
+                <td class="align-middle">
+                    {{ page.page_name }}
+                </td>
+                <td class="align-middle">
+                    {{ page.is_mainpage|yesno:"Yes,No" }}
+                </td>
+                <td class="align-middle">
+                    {{ page.description }}
+                </td>
+                <td class="align-middle">
+                    <a href='{% url 'pages.view.page' page.slug %}'> {% url 'pages.view.page' page.slug %}</a>
+                </td>
+                <td>
+                    {% if perms.pages.delete_page or perms.pages.edit_page %}
+                        <div class="btn-group">
+                            {% if perms.pages.delete_page %}
+                                <a href="{% url 'pages.delete.page' page.slug %}"
+                                   class="btn btn-danger confirm-delete">Delete</a>
+                            {% endif %}
+                            {% if perms.pages.edit_page %}
+                                <a href="{% url 'pages.edit.page' page.slug %}"
+                                   class="btn btn-primary">Edit</a>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        None
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
