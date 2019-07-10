@@ -5,7 +5,7 @@ from pygments import highlight
 from pygments.lexers import get_lexer_by_name
 from pygments.formatters import HtmlFormatter
 
-from ..models import Page
+from ..models import Page, Link
 
 register = template.Library()
 
@@ -18,6 +18,11 @@ def get_main_page(*args, **kwargs):
 @register.simple_tag
 def get_pages(*args, **kwargs):
     return Page.objects.all()
+
+
+@register.simple_tag
+def get_links(*args, **kwargs):
+    return Link.objects.all()
 
 
 @register.simple_tag

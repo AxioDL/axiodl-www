@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
 
     # external
-    'autoslug',
     'widget_tweaks',
     'martor',
     'sass_processor',

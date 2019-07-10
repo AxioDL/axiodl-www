@@ -33,4 +33,3 @@ class Page(models.Model):
         return mark_safe('<img src="/media/images/%s" width="150" height="150" />' % self.logo)
 
     image_tag.short_description = 'Image'
-

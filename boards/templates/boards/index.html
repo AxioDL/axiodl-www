@@ -8,7 +8,7 @@
     {% for category in categories %}
         {% with category.get_children as boards %}
             {% with None as board %}
-                <div class="card bg-light border-dark mb-3">
+                <div class="card bg-dark border-dark mb-3">
                     <div class="card-header bg-dark text-light">
                         <div class="card-title"><h1 class="text-light font-weight-bold">{{ category.name }}</h1></div>
                     </div>

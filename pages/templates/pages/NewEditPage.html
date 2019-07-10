@@ -1,19 +1,29 @@
 {% extends 'base.html' %}
 {% load form_tags widget_tweaks martortags %}
 
-{% block title %}Start a New Topic{% endblock %}
+{% block title %}{% if '/new' in request.path %}Create a new Page{% else %}Edit Page{% endif %}{% endblock %}
 
 {% block breadcrumb %}
     <li class="breadcrumb-item"><a href="{% url 'home' %}">Index</a></li>
-    <li class="breadcrumb-item active">New page</li>
+    {% if '/new' in request.path %}
+        <li class="breadcrumb-item active">New page</li>
+    {% else %}
+        <li class="breadcrumb-item active">Edit page</li>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
     <div class="row justify-content-center">
         <div class="col-lg-11 col-md-11 col-sm-11">
-            <div class="card border-dark">
+            <div class="card bg-dark border-dark">
                 <div class="card-header bg-dark text-light">
-                    <div class="card-title">New Page</div>
+                    <div class="card-title">
+                        {% if '/new' in request.path %}
+                            New Page
+                        {% else %}
+                            Edit Page
+                        {% endif %}
+                    </div>
                 </div>
                 <form method="post" enctype="multipart/form-data" novalidate>
                     {% csrf_token %}
@@ -24,7 +34,7 @@
                             {% endfor %}
                         </div>
                     {% endif %}
-                    <div class="card-body">
+                    <div class="card-body bg-light">
                         <!-- Page name -->
                         {{ form.page_name.label_tag }}
                         {% render_field form.page_name class=form.page_name|input_class %}

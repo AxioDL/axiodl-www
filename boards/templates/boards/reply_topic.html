@@ -15,11 +15,11 @@
 {% endblock %}
 
 {% block content %}
-    <div class="card border-dark">
+    <div class="card bg-dark border-dark">
         <div class="card-header bg-dark text-light">
             <div class="card-title">New Topic</div>
         </div>
-        <div class="card-body">
+        <div class="card-body bg-light border-dark">
             <form method="post" class="mb-4">
                 {% csrf_token %}
                 {% include 'includes/form.html' %}
