@@ -1,4 +1,4 @@
-"""www URL Configuration
+"""axiodl URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.2/topics/http/urls/
@@ -20,13 +20,15 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('', include('pages.urls')),
+    path('', include('core.urls')),
     url(r'^boards/', include('boards.urls')),
     url(r'^account/', include('accounts.urls')),
     url(r'^jet/', include('jet.urls', 'jet')),  # Django JET URLS
     url(r'^jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),  # Django JET dashboard URLS
     url(r'^admin/', admin.site.urls),
-    path('martor/', include('martor.urls')),
+    url(r'^martor/', include('martor.urls')),
+    url(r'^nested_admin/', include('nested_admin.urls')),
+    url(r'^i18n/', include('django.conf.urls.i18n')),
 ]
 
 admin.site.site_header = 'AxioDL Admin'

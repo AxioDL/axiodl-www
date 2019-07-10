@@ -3,7 +3,6 @@ from django.template.defaultfilters import safe
 import mistune
 from pygments import highlight
 from pygments.lexers import get_lexer_by_name
-from pygments.formatters import HtmlFormatter
 
 from ..models import Page, Link
 

@@ -1,5 +1,5 @@
 virtualenv .venv
 . .venv/bin/activate --prompt=axiodl-www-virtualenv
 pip install -r ./requirements.txt
-exec python ./manage.py migrate
-exec python ./manage.py createsuperuser
+python ./manage.py initdata
+#exec python ./manage.py createsuperuser

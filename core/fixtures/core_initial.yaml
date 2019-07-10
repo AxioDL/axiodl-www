@@ -3,16 +3,16 @@
     name: Content Creator
     permissions:
     - - add_page
-      - pages
+      - core
       - page
     - - change_page
-      - pages
+      - core
       - page
     - - delete_page
-      - pages
+      - core
       - page
     - - view_page
-      - pages
+      - core
       - page
 - model: auth.group
   fields:
@@ -32,7 +32,7 @@
     date_joined: 2019-01-01 00:00
     groups: []
     user_permissions: []
-- model: pages.page
+- model: core.page
   fields:
     page_name: 'Welcome!'
     description: 'Welcome to AxioDL!'

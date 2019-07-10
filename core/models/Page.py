@@ -4,7 +4,7 @@ from django.conf import settings
 from django.utils.html import mark_safe
 from martor.models import MartorField
 
-from www.fields import UniqueBooleanField
+from axiodl.fields import UniqueBooleanField
 
 
 class Page(models.Model):

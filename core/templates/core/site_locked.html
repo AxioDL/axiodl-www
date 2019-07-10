@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% load i18n site_configuration %}
+{% block title %} {%  get_site_name %} - {% get_site_slogan %}{% endblock %}
+{% block content %}
+<div class="alert-heading">{% trans "Site Locked!" %}</div>
+{% endblock %}

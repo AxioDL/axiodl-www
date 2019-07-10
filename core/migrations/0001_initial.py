@@ -4,7 +4,7 @@ from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
 import martor.models
-import www.fields
+import axiodl.fields
 
 
 class Migration(migrations.Migration):
@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('page_name', models.CharField(max_length=100)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(blank=True, null=True)),
-                ('is_mainpage', www.fields.UniqueBooleanField(verbose_name='Main Page')),
+                ('is_mainpage', axiodl.fields.UniqueBooleanField(verbose_name='Main Page')),
                 ('hidden', models.BooleanField(blank=True, default=False)),
                 ('description', models.CharField(max_length=200)),
                 ('content', martor.models.MartorField(blank=True, null=True)),

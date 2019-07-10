@@ -1,34 +1,44 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import permission_required
 from django.core.exceptions import ObjectDoesNotExist
-from django.views.generic import UpdateView, DeleteView, ListView
+from django.views.generic import View, UpdateView, DeleteView, ListView
 from django.utils import timezone
 from django.urls import reverse_lazy
 from .forms.PageForm import PageForm
 from .models import Page
+from axiodl import sitesettings
 
 
-def index(request):
-    try:
-        page = Page.objects.get(is_mainpage=True)
-    except ObjectDoesNotExist:
-        page = None
+class IndexView(View):
 
-    return render(request, 'pages/index.html', {'page': page})
+    def get(self, request, *args, **kwargs):
+
+        if not sitesettings.is_site_locked() or (request.user.is_staff or request.user.is_superuser):
+            try:
+                page = Page.objects.get(is_mainpage=True)
+            except ObjectDoesNotExist:
+                page = None
+
+            return render(request, 'core/index.html', {'page': page})
+        else:
+            return render(request, 'core/site_locked.html')
 
 
-def view_page(request, slug):
-    try:
-        page = Page.objects.get(slug=slug)
-    except ObjectDoesNotExist:
-        page = None
+class PageView(View):
 
-    return render(request, 'pages/index.html', {'page': page})
+    def get(self, request, slug):
+
+        try:
+            page = Page.objects.get(slug=slug)
+        except ObjectDoesNotExist:
+            page = None
+
+        return render(request, 'core/index.html', {'page': page})
 
 
 class PageDeleteView(DeleteView):
     model = Page
-    template_name = 'pages/DeletePage.html'
+    template_name = 'core/pages/DeletePage.html'
     success_url = reverse_lazy('home')
     slug_field = 'slug'
 
@@ -41,7 +51,7 @@ class PageDeleteView(DeleteView):
 class PageUpdateView(UpdateView):
     model = Page
     fields = ('page_name', 'description', 'content', 'logo', 'is_mainpage')
-    template_name = 'pages/NewEditPage.html'
+    template_name = 'core/pages/NewEditPage.html'
     context_object_name = 'page'
     slug_field = 'slug'
 
@@ -50,15 +60,15 @@ class PageUpdateView(UpdateView):
         page.updated_by = self.request.user
         page.updated_at = timezone.now()
         page.save()
-        return redirect('pages.view.page', slug=page.slug)
+        return redirect('core.view.page', slug=page.slug)
 
 
 class PageListView(ListView):
     model = Page
-    template_name = 'pages/ListPages.html'
+    template_name = 'core/pages/ListPages.html'
 
 
-@permission_required('pages.add_page')
+@permission_required('core.add_page')
 def create_page(request):
     if request.method == 'POST':
         if 'cancel' in request.POST:
@@ -73,4 +83,4 @@ def create_page(request):
             return redirect('home')
     else:
         form = PageForm()
-    return render(request, 'pages/NewEditPage.html', {'form': form})
+    return render(request, 'core/pages/NewEditPage.html', {'form': form})
