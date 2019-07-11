@@ -38,9 +38,9 @@
                     <div class="row">
                         <div class="col-8">
                         <span class="float-left mt-2 text-light">
-                            {% blocktrans %}Created on {{ page.created_at }} by {{ page.created_by }}{% endblocktrans %}
+                            {% blocktrans with name=page.created_by date=page.created_at%}Created on {{ date }} by {{ name }}{% endblocktrans %}
                             {% if page.updated_at %}
-                                {% blocktrans %}Updated on {{ page.updated_at }} by {{ page.updated_by }}{% endblocktrans %}
+                                {% blocktrans with name=page.updated_by date=page.updated_at%}Updated on {{ date }} by {{ name }}{% endblocktrans %}
                             {% endif %}
                         </span>
                         </div>
