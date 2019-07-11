@@ -128,6 +128,8 @@ USE_I18N = True
 LANGUAGE_CODE = 'en'
 LANGUAGES = (
     ('en', _('US English')),
+    ('en_AU', _('Australian English')),
+    ('en_GB', _('British English')),
 )
 
 LOCALE_PATHS = (

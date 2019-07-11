@@ -38,9 +38,9 @@
                     <div class="row">
                         <div class="col-8">
                         <span class="float-left mt-2 text-light">
-                            Created on {{ page.created_at }} by {{ page.created_by }}
+                            {% blocktrans %}Created on {{ page.created_at }} by {{ page.created_by }}{% endblocktrans %}
                             {% if page.updated_at %}
-                                Updated on {{ page.updated_at }} by {{ page.updated_by }}
+                                {% blocktrans %}Updated on {{ page.updated_at }} by {{ page.updated_by }}{% endblocktrans %}
                             {% endif %}
                         </span>
                         </div>
@@ -50,11 +50,11 @@
                         <div class="btn-group">
                             {% if perms.pages.delete_page %}
                                 <a href="{% url 'pages.delete.page' page.slug %}"
-                                   class="btn btn-danger confirm-delete">Delete</a>
+                                   class="btn btn-danger confirm-delete">{% trans "Delete" %}</a>
                             {% endif %}
                             {% if perms.pages.edit_page %}
                                 <a href="{% url 'pages.edit.page' page.slug %}"
-                                   class="btn btn-primary">Edit</a>
+                                   class="btn btn-primary">{% trans "Edit" %}</a>
                             {% endif %}
                         </div>
                     </div>
