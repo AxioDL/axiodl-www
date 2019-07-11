@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 from django.utils.translation import ugettext_lazy as _
 from .sitesettings import configuration
-import os
+
+import os, random, string
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,7 +21,20 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '+()y2lqbl2t9pa6%p(soauky(o0-2oqp+z!sqahv5*a-yh0*w$'
+SECRET_KEY = ''
+
+secret = open('.secret_key', 'r')
+if secret is not None:
+    lines = secret.readlines()
+    secret.close()
+    if len(lines) > 0:
+        SECRET_KEY = lines[0]
+
+if SECRET_KEY == '':
+    SECRET_KEY = ''.join([random.choice(string.ascii_letters + string.digits + string.punctuation) for n in range(50)])
+    secret = open('.secret_key', 'w')
+    secret.write(SECRET_KEY)
+    secret.close()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -70,7 +84,7 @@ TEMPLATES = [
         'DIRS': [
             os.path.join(BASE_DIR, 'core/templates/'),
             os.path.join(BASE_DIR, 'axiodl/templates/'),
-            os.path.join(BASE_DIR, 'boards/templates'),
+            os.path.join(BASE_DIR, 'boards/templates/'),
             os.path.join(BASE_DIR, 'accounts/templates/'),
         ],
         'APP_DIRS': True,
@@ -128,8 +142,6 @@ USE_I18N = True
 LANGUAGE_CODE = 'en'
 LANGUAGES = (
     ('en', _('US English')),
-    ('en_AU', _('Australian English')),
-    ('en_GB', _('British English')),
 )
 
 LOCALE_PATHS = (
@@ -145,9 +157,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'accounts/static'),
-]
+if DEBUG:
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'accounts/static'),
+        os.path.join(BASE_DIR, 'core/static'),
+        os.path.join(BASE_DIR, 'boards/static'),
+    ]
 
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',

@@ -2,6 +2,7 @@
 *~
 __pycache__
 *.mo
+*.secret_key
 venv
 .venv
 db.sqlite3
