@@ -60,7 +60,7 @@ class PageUpdateView(UpdateView):
         page.updated_by = self.request.user
         page.updated_at = timezone.now()
         page.save()
-        return redirect('core.view.page', slug=page.slug)
+        return redirect('pages.view.page', slug=page.slug)
 
 
 class PageListView(ListView):
