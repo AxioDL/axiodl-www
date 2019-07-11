@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.db.models import Count
 from django.utils import timezone
 from django.urls import reverse
 from django.utils.decorators import method_decorator
-from django.views.generic import UpdateView, ListView
+from django.views.generic import UpdateView, ListView, CreateView, DeleteView
 from .forms import NewTopicForm, PostForm
 from .models import Category, Board, Topic, Post
 
@@ -26,7 +26,7 @@ class TopicListView(ListView):
         return queryset
 
 
-@login_required
+@method_decorator(login_required, name='dispatch')
 def new_topic(request, pk):
     board = get_object_or_404(Board, pk=pk)
     if request.method == 'POST':

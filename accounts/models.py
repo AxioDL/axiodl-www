@@ -24,7 +24,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.ImageField(upload_to=path_and_rename, null=True, blank=True)
     birthdate = models.DateTimeField(null=True, blank=True)
-    use_gravatar = models.BooleanField(blank=True, default=False)
+    use_gravatar = models.BooleanField(blank=True, default=False, verbose_name='Use Avatars from Gravatar?')
     location = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
