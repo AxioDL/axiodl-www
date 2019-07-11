@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = ''
 
-secret = open(BASE_DIR + '.secret_key', 'r')
+secret = open(BASE_DIR + '/.secret_key', 'r')
 if secret is not None:
     lines = secret.readlines()
     secret.close()
@@ -32,7 +32,7 @@ if secret is not None:
 
 if SECRET_KEY == '':
     SECRET_KEY = ''.join([random.choice(string.ascii_letters + string.digits + string.punctuation) for n in range(50)])
-    secret = open(BASE_DIR + '.secret_key', 'w')
+    secret = open(BASE_DIR + '/.secret_key', 'w')
     secret.write(SECRET_KEY)
     secret.close()
 
@@ -82,10 +82,10 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'core/templates/'),
-            os.path.join(BASE_DIR, 'axiodl/templates/'),
-            os.path.join(BASE_DIR, 'boards/templates/'),
-            os.path.join(BASE_DIR, 'accounts/templates/'),
+            os.path.join(BASE_DIR, '/core/templates/'),
+            os.path.join(BASE_DIR, '/axiodl/templates/'),
+            os.path.join(BASE_DIR, '/boards/templates/'),
+            os.path.join(BASE_DIR, '/accounts/templates/'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -159,9 +159,9 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 if DEBUG:
     STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'accounts/static'),
-        os.path.join(BASE_DIR, 'core/static'),
-        os.path.join(BASE_DIR, 'boards/static'),
+        os.path.join(BASE_DIR, '/accounts/static'),
+        os.path.join(BASE_DIR, '/core/static'),
+        os.path.join(BASE_DIR, '/boards/static'),
     ]
 
 STATICFILES_FINDERS = [
