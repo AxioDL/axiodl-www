@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = ''
 
-secret = open('.secret_key', 'r')
+secret = open(BASE_DIR + '.secret_key', 'r')
 if secret is not None:
     lines = secret.readlines()
     secret.close()
@@ -32,7 +32,7 @@ if secret is not None:
 
 if SECRET_KEY == '':
     SECRET_KEY = ''.join([random.choice(string.ascii_letters + string.digits + string.punctuation) for n in range(50)])
-    secret = open('.secret_key', 'w')
+    secret = open(BASE_DIR + '.secret_key', 'w')
     secret.write(SECRET_KEY)
     secret.close()
 
