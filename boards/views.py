@@ -26,7 +26,7 @@ class TopicListView(ListView):
         return queryset
 
 
-@method_decorator(login_required, name='dispatch')
+@login_required
 def new_topic(request, pk):
     board = get_object_or_404(Board, pk=pk)
     if request.method == 'POST':

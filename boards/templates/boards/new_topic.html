@@ -13,11 +13,11 @@
         <div class="card-header bg-dark text-light">
             <div class="card-title">New Topic</div>
         </div>
-        <div class="card-body">
+        <div class="card-body bg-light border-dark
             <form method="post" novalidate>
                 {% csrf_token %}
                 {% include 'includes/form.html' %}
-                <button type="submit" class="btn btn-success">Post</button>
+                <button type="submit" class="btn btn-success btn-block">Create</button>
             </form>
         </div>
     </div>
