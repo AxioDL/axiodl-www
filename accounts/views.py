@@ -1,11 +1,14 @@
 from django.contrib.auth import login as auth_login
-from django.contrib.auth import get_user_model
+from django.contrib.auth.views import LoginView
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import UpdateView, CreateView
+from django.utils.http import urlencode
 from django.shortcuts import render, redirect
-from .forms import UserSignUpForm, ProfileForm, UserCreationMultiForm
+import hashlib
+from .forms import ProfileForm, UserCreationMultiForm
 from .models import  Profile
 
 
@@ -32,12 +35,27 @@ class UserSignupView(CreateView):
     template_name = 'signup.html'
 
     def form_valid(self, form):
-        # We need to save the user before we can save the profile
-        user = form['user'].save()
-        profile = form['profile'].save(commit=False)
-        profile.user = user
-        profile.save()
-        return redirect(self.get_success_url())
+        if self.request.recaptcha_is_valid:
+            # We need to save the user before we can save the profile
+            user = form['user'].save()
+            profile = form['profile'].save(commit=False)
+            profile.user = user
+            profile.save()
+            return redirect(self.get_success_url())
+        return render(self.request, self.template_name, self.get_context_data())
+
+
+class UserLoginView(LoginView):
+    form_class = AuthenticationForm
+    success_url = reverse_lazy('home')
+    template_name = 'login.html'
+
+    def form_valid(self, form):
+        if self.request.recaptcha_is_valid:
+            form.save()
+            return redirect(self.get_success_url())
+
+        return render(self.request, self.template_name, self.get_context_data())
 
 
 @method_decorator(login_required, name='dispatch')

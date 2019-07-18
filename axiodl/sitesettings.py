@@ -13,3 +13,7 @@ def lock_site(locked=False):
 
 def is_site_locked():
     return configuration.locked
+
+
+GOOGLE_RECAPTCHA_SITE_KEY='6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI' # Google Test key - Replace immediately with your key
+GOOGLE_RECAPTCHA_SECRET_KEY='6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe' # Google Test key - Replace immediately with your key

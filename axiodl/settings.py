@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 from django.utils.translation import ugettext_lazy as _
-from .sitesettings import configuration
+from .sitesettings import configuration, GOOGLE_RECAPTCHA_SECRET_KEY, GOOGLE_RECAPTCHA_SITE_KEY
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -80,6 +80,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'axiodl.context_processors.recaptcha_site_key',
             ],
             'libraries': {
                 'site_configuration': 'axiodl.templatetags.site_configuration',

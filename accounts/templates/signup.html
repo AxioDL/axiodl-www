@@ -9,7 +9,7 @@
                 <div class="card-title"><h2 class="card-title">Sign up</h2></div>
             </div>
 
-            <form method="post" novalidate>
+            <form method="post">
                 <div class="card-body bg-light border-dark">
                     <h3>*Denotes required fields</h3>
                     {% csrf_token %}
@@ -100,7 +100,15 @@
                                 {{ form.profile.use_gravatar.help_text|safe }}
                             </small>
                         {% endif %}
+                        <script src='https://www.google.com/recaptcha/api.js'></script>
                     </div>
+                    <div class="form-group g-recaptcha"
+                         data-sitekey="{{ GOOGLE_RECAPTCHA_SITE_KEY }}"></div>
+                    {% if messages %}
+                        {% for message in messages %}
+                            {{ message }}
+                        {% endfor %}
+                    {% endif %}
                     <button type="submit" class="btn btn-primary btn-block">Create an account</button>
                 </div>
             </form>
