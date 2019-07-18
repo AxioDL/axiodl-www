@@ -52,8 +52,7 @@ class UserLoginView(LoginView):
 
     def form_valid(self, form):
         if self.request.recaptcha_is_valid:
-            form.save()
-            return redirect(self.get_success_url())
+            return super(UserLoginView, self).form_valid(form)
 
         return render(self.request, self.template_name, self.get_context_data())
 
