@@ -110,8 +110,12 @@
                             <div class="row">
                                 <div class="col-9"></div>
                                 <div class="col-2 btn-group">
-                                    <a href="{%  url 'pages.view.page' page.slug %}" class="btn btn-danger">Cancel</a>
-                                    <button type="submit" class="btn btn-success">{% if '/new' in request.path %}Cancel{% else %}Save{% endif %}</button>
+                                    {% if page.slug %}
+                                        <a href="{%  url 'pages.view.page' page.slug %}" class="btn btn-danger">Cancel</a>
+                                    {% else %}
+                                        <a href="{%  url 'home' %}" class="btn btn-danger">Cancel</a>
+                                    {% endif %}
+                                    <button type="submit" class="btn btn-success">{% if '/create' in request.path %}Create{% else %}Save{% endif %}</button>
                                 </div>
                             </div>
                         </div>
