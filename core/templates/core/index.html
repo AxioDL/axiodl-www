@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static core_extras martortags %}
+{% load static core_extras martortags i18n %}
 
 {% block meta %}
     {% if page %}
@@ -38,9 +38,9 @@
                     <div class="row">
                         <div class="col-8">
                         <span class="float-left mt-2 text-light">
-                            Created on {{ page.created_at }} by {{ page.created_by }}
+                            {% blocktrans with name=page.created_by date=page.created_at%}Created on {{ date }} by {{ name }}{% endblocktrans %}
                             {% if page.updated_at %}
-                                Updated on {{ page.updated_at }} by {{ page.updated_by }}
+                                {% blocktrans with name=page.updated_by date=page.updated_at%}Updated on {{ date }} by {{ name }}{% endblocktrans %}
                             {% endif %}
                         </span>
                         </div>
@@ -50,11 +50,11 @@
                         <div class="btn-group">
                             {% if perms.pages.delete_page %}
                                 <a href="{% url 'pages.delete.page' page.slug %}"
-                                   class="btn btn-danger confirm-delete">Delete</a>
+                                   class="btn btn-danger confirm-delete">{% trans "Delete" %}</a>
                             {% endif %}
                             {% if perms.pages.edit_page %}
                                 <a href="{% url 'pages.edit.page' page.slug %}"
-                                   class="btn btn-primary">Edit</a>
+                                   class="btn btn-primary">{% trans "Edit" %}</a>
                             {% endif %}
                         </div>
                     </div>
